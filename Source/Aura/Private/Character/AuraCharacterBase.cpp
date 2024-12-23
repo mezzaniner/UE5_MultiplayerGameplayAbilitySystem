@@ -21,15 +21,20 @@ AAuraCharacterBase::AAuraCharacterBase()
 	Weapon->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
+void AAuraCharacterBase::BeginPlay()
+{
+	Super::BeginPlay();
+	
+}
+
 UAbilitySystemComponent* AAuraCharacterBase::GetAbilitySystemComponent() const
 {
 	return AbilitySystemComponent;
 }
 
-void AAuraCharacterBase::BeginPlay()
+UAnimMontage* AAuraCharacterBase::GetHitReactMontage_Implementation()
 {
-	Super::BeginPlay();
-	
+	return HitReactMontage;
 }
 
 FVector AAuraCharacterBase::GetCombatSocketLocation()

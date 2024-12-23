@@ -9,7 +9,9 @@
 #include "UI/WidgetController/OverlayWidgetController.h" // REFACTOR: Can be replaced if we create new class for delegates currently in OverlayWidgetController.h
 #include "AuraEnemy.generated.h"
 
+
 class UWidgetComponent;
+
 
 /**
  * 
@@ -38,6 +40,15 @@ public:
 
 	UPROPERTY(BlueprintAssignable)
 	FOnAttributeChangedSignature OnMaxHealthChanged;
+
+	void HitReactTagChanged(const FGameplayTag CallbackTag, int32 NewCount);
+
+	UPROPERTY(BlueprintReadOnly, Category = "Combat")
+	bool bHitReacting;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Combat")
+	float BaseWalkSpeed = 250.f;
+
 	
 protected:
 	virtual void BeginPlay() override;
@@ -52,6 +63,5 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "UI")
 	TObjectPtr<UWidgetComponent> HealthBar;
-	
 	
 };

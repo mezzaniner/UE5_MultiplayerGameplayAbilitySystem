@@ -32,6 +32,7 @@ public:
 
 	/** ICombatInterface **/
 	virtual int32 GetCharacterLevel() override;
+	virtual void Die() override;
 	 /** End ICombatInterface **/
 
 	// REFACTOR: Move the delegate class declarations to a new class from OverlayWidgetController.h?
@@ -48,6 +49,9 @@ public:
 
 	UPROPERTY(BlueprintReadOnly, Category = "Combat")
 	float BaseWalkSpeed = 250.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Combat")
+	float LifeSpan = 5.f;
 
 	
 protected:

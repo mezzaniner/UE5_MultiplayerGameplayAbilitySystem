@@ -35,4 +35,6 @@ public:
 	// GetHitReactMontage_Implementation() will be called IF we don't override it in Blueprints
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	UAnimMontage* GetHitReactMontage();
+
+	virtual void Die() = 0;
 };

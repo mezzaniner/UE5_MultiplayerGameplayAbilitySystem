@@ -57,6 +57,7 @@ void AAuraCharacterBase::MulticastHandleDeath_Implementation()
 	GetMesh()->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Block);
 	
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	Dissolve();
 }
 
 FVector AAuraCharacterBase::GetCombatSocketLocation()
@@ -71,7 +72,7 @@ void AAuraCharacterBase::InitAbilityActorInfo()
 
 void AAuraCharacterBase::ApplyEffectToSelf(const TSubclassOf<UGameplayEffect>& GameplayEffectClass, const float Level) const
 {
-	check(IsValid(AbilitySystemComponent))
+	check(IsValid(AbilitySystemComponent));
 	checkf(GameplayEffectClass, TEXT("DefaultPrimaryAttributes is not set in Blueprint"));
 	
 	FGameplayEffectContextHandle ContextHandle = GetAbilitySystemComponent()->MakeEffectContext();
@@ -95,5 +96,22 @@ void AAuraCharacterBase::AddCharacterAbilities()
 	if (!HasAuthority()) return;
 
 	AuraAbilitySystemComponent->AddCharacterAbilities(StartingAbilityClasses);
+}
+
+void AAuraCharacterBase::Dissolve()
+{
+	if (IsValid(MeshDissolveMI) && IsValid(WeaponDissolveMI))
+	{
+		TArray<UMaterialInstanceDynamic*> DynamicMaterialInstances;
+		UMaterialInstanceDynamic* MeshDynamicMI = UMaterialInstanceDynamic::Create(MeshDissolveMI, this);
+		GetMesh()->SetMaterial(0, MeshDynamicMI);
+		DynamicMaterialInstances.AddUnique(MeshDynamicMI);
+		
+		UMaterialInstanceDynamic* WeaponDynamicMI = UMaterialInstanceDynamic::Create(WeaponDissolveMI, this);
+		Weapon->SetMaterial(0, WeaponDynamicMI);
+		DynamicMaterialInstances.AddUnique(WeaponDynamicMI);
+
+		StartDissolveTimeline(DynamicMaterialInstances);
+	}
 }
 

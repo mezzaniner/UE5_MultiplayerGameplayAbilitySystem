@@ -90,6 +90,7 @@ public:
 	UFUNCTION()
 	void OnRep_Strength(const FGameplayAttributeData& OldStrength) const;
 
+	
 	// Intelligence
 	UPROPERTY(ReplicatedUsing = OnRep_Intelligence, BlueprintReadOnly, Category = "Primary Attributes")
 	FGameplayAttributeData Intelligence;
@@ -98,6 +99,7 @@ public:
 
 	UFUNCTION()
 	void OnRep_Intelligence(const FGameplayAttributeData& OldIntelligence) const;
+
 	
 	// Resilience
 	UPROPERTY(ReplicatedUsing = OnRep_Resilience, BlueprintReadOnly, Category = "Primary Attributes")
@@ -107,6 +109,7 @@ public:
 
 	UFUNCTION()
 	void OnRep_Resilience(const FGameplayAttributeData& OldResilience) const;
+
 	
 	// Vigor
 	UPROPERTY(ReplicatedUsing = OnRep_Vigor, BlueprintReadOnly, Category = "Primary Attributes")
@@ -130,6 +133,7 @@ public:
 
 	UFUNCTION()
 	void OnRep_Armor(const FGameplayAttributeData& OldArmor) const;
+
 	
 	// Armor Penetration
 	UPROPERTY(ReplicatedUsing = OnRep_ArmorPenetration, BlueprintReadOnly, Category = "Vital Attributes")
@@ -139,6 +143,7 @@ public:
 
 	UFUNCTION()
 	void OnRep_ArmorPenetration(const FGameplayAttributeData& OldArmorPenetration) const;
+
 	
 	// Block Chance
 	UPROPERTY(ReplicatedUsing = OnRep_BlockChance, BlueprintReadOnly, Category = "Vital Attributes")
@@ -148,6 +153,7 @@ public:
 
 	UFUNCTION()
 	void OnRep_BlockChance(const FGameplayAttributeData& OldBlockChance) const;
+
 	
 	// Critical Hit Chance
 	UPROPERTY(ReplicatedUsing = OnRep_CriticalHitChance, BlueprintReadOnly, Category = "Vital Attributes")
@@ -157,6 +163,7 @@ public:
 
 	UFUNCTION()
 	void OnRep_CriticalHitChance(const FGameplayAttributeData& OldCriticalHitChance) const;
+
 	
 	// Critical Hit Damage
 	UPROPERTY(ReplicatedUsing = OnRep_CriticalHitDamage, BlueprintReadOnly, Category = "Vital Attributes")
@@ -166,6 +173,7 @@ public:
 
 	UFUNCTION()
 	void OnRep_CriticalHitDamage(const FGameplayAttributeData& OldCriticalHitDamage) const;
+
 	
 	// Critical Hit Resistance
 	UPROPERTY(ReplicatedUsing = OnRep_CriticalHitResistance, BlueprintReadOnly, Category = "Vital Attributes")
@@ -175,6 +183,7 @@ public:
 
 	UFUNCTION()
 	void OnRep_CriticalHitResistance(const FGameplayAttributeData& OldCriticalHitResistance) const;
+
 	
 	// Health Regeneration
 	UPROPERTY(ReplicatedUsing = OnRep_HealthRegeneration, BlueprintReadOnly, Category = "Vital Attributes")
@@ -184,6 +193,7 @@ public:
 
 	UFUNCTION()
 	void OnRep_HealthRegeneration(const FGameplayAttributeData& OldHealthRegeneration) const;
+
 	
 	// Mana Regeneration
 	UPROPERTY(ReplicatedUsing = OnRep_ManaRegeneration, BlueprintReadOnly, Category = "Vital Attributes")
@@ -194,6 +204,7 @@ public:
 	UFUNCTION()
 	void OnRep_ManaRegeneration(const FGameplayAttributeData& OldManaRegeneration) const;
 
+	
 	// Max Health
 	UPROPERTY(ReplicatedUsing = OnRep_MaxHealth, BlueprintReadOnly, Category = "Vital Attributes")
 	FGameplayAttributeData MaxHealth;
@@ -202,6 +213,7 @@ public:
 	void OnRep_MaxHealth(const FGameplayAttributeData& OldMaxHealth) const;
 
 	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, MaxHealth);
+
 	
 	// Max Mana
 	UPROPERTY(ReplicatedUsing = OnRep_MaxMana, BlueprintReadOnly, Category = "Vital Attributes")
@@ -225,6 +237,7 @@ public:
 	void OnRep_Health(const FGameplayAttributeData& OldHealth) const;
 	
 	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, Health);
+
 	
 	// Mana
 	UPROPERTY(ReplicatedUsing = OnRep_Mana, BlueprintReadOnly, Category = "Vital Attributes")
@@ -240,6 +253,7 @@ public:
 	 * Meta Attributes
 	 */
 
+	// Incoming Damage
 	UPROPERTY(BlueprintReadOnly, Category = "Meta Attributes")
 	FGameplayAttributeData IncomingDamage;
 	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, IncomingDamage);

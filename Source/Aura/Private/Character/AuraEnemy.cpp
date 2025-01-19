@@ -10,6 +10,9 @@
 #include "Components/WidgetComponent.h"
 #include "UI/Widget/AuraUserWidget.h"
 #include "AuraGameplayTags.h"
+#include "AI/AuraAIController.h"
+#include "BehaviorTree/BehaviorTree.h"
+#include "BehaviorTree/BlackboardComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
 AAuraEnemy::AAuraEnemy()
@@ -26,10 +29,21 @@ AAuraEnemy::AAuraEnemy()
 	HealthBar->SetupAttachment(RootComponent); // Should I use GetRootComponent() instead?
 }
 
+void AAuraEnemy::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+
+	if (!HasAuthority()) return;
+	AuraAIController = Cast<AAuraAIController>(NewController);
+
+	AuraAIController->GetBlackboardComponent()->InitializeBlackboard(*BehaviorTree->BlackboardAsset);
+	AuraAIController->RunBehaviorTree(BehaviorTree);
+}
+
 void AAuraEnemy::BeginPlay()
 {
 	Super::BeginPlay();
-
+	
 	// Initialize default attributes and abilities
 	GetCharacterMovement()->MaxWalkSpeed = BaseWalkSpeed;
 	InitAbilityActorInfo();
@@ -50,24 +64,24 @@ void AAuraEnemy::BeginPlay()
 	if (AuraAS)
 	{
 		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AuraAS->GetHealthAttribute())
-		                      .AddLambda(
-			                      [this](const FOnAttributeChangeData& Data)
-			                      {
-				                      OnHealthChanged.Broadcast(Data.NewValue);
-			                      }
-		                      );
+			.AddLambda(
+				[this](const FOnAttributeChangeData& Data)
+				{
+				  OnHealthChanged.Broadcast(Data.NewValue);
+				}
+			);
 		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AuraAS->GetMaxHealthAttribute())
-		                      .AddLambda(
-			                      [this](const FOnAttributeChangeData& Data)
-			                      {
-				                      OnMaxHealthChanged.Broadcast(Data.NewValue);
-			                      }
-		                      );
-		AbilitySystemComponent->RegisterGameplayTagEvent(FAuraGameplayTags::Get().Effects_HitReact,
-		                                                 EGameplayTagEventType::NewOrRemoved).AddUObject(
-			this,
-			&AAuraEnemy::HitReactTagChanged
-		);
+			.AddLambda(
+				[this](const FOnAttributeChangeData& Data)
+				{
+				  OnMaxHealthChanged.Broadcast(Data.NewValue);
+				}
+			);
+		AbilitySystemComponent->RegisterGameplayTagEvent(FAuraGameplayTags::Get().Effects_HitReact, EGameplayTagEventType::NewOrRemoved)
+			.AddUObject(
+				this,
+				&AAuraEnemy::HitReactTagChanged
+			);
 
 		// Broadcasting the initial values here
 		OnHealthChanged.Broadcast(AuraAS->GetHealth());

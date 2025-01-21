@@ -54,9 +54,10 @@ void AAuraEnemy::BeginPlay()
 	// Initialize default attributes and abilities
 	GetCharacterMovement()->MaxWalkSpeed = BaseWalkSpeed;
 	InitAbilityActorInfo();
+	
 	if (HasAuthority())
 	{
-		UAuraAbilitySystemLibrary::InitializeStartupAbilities(this, AbilitySystemComponent);
+		UAuraAbilitySystemLibrary::GiveStartupAbilities(this, AbilitySystemComponent, CharacterClass);
 	}
 
 	// Set Widget Controller

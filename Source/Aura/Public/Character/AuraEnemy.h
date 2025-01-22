@@ -28,16 +28,18 @@ public:
 	AAuraEnemy();
 
 	virtual void PossessedBy(AController* NewController) override;
+
+	/** ICombatInterface **/
+	virtual int32 GetCharacterLevel() override;
+	virtual void SetCombatTarget_Implementation(AActor* InCombatTarget) override;
+	virtual AActor* GetCombatTarget_Implementation() const override;
+	virtual void Die() override;
+	 /** End ICombatInterface **/
 	
 	/** IEnemyInterface **/
 	virtual void HighlightActor() override;
 	virtual void UnHighlightActor() override;
 	/** End IEnemyInterface **/
-
-	/** ICombatInterface **/
-	virtual int32 GetCharacterLevel() override;
-	virtual void Die() override;
-	 /** End ICombatInterface **/
 
 	// REFACTOR: Move the delegate class declarations to a new class from OverlayWidgetController.h?
 	UPROPERTY(BlueprintAssignable)

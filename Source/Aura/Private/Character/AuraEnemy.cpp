@@ -121,6 +121,26 @@ void AAuraEnemy::InitializeDefaultAttributes()
 	UAuraAbilitySystemLibrary::InitializeDefaultAttributes(this, CharacterClass, Level, AbilitySystemComponent);
 }
 
+int32 AAuraEnemy::GetCharacterLevel()
+{
+	return Level;
+}
+
+void AAuraEnemy::SetCombatTarget_Implementation(AActor* InCombatTarget)
+{
+	CombatTarget = InCombatTarget;
+}
+
+AActor* AAuraEnemy::GetCombatTarget_Implementation() const
+{
+	return CombatTarget;
+}
+
+void AAuraEnemy::Die()
+{
+	SetLifeSpan(LifeSpan);
+	Super::Die();
+}
 
 void AAuraEnemy::HighlightActor()
 {
@@ -134,15 +154,4 @@ void AAuraEnemy::UnHighlightActor()
 {
 	GetMesh()->SetRenderCustomDepth(false);
 	Weapon->SetRenderCustomDepth(false);
-}
-
-int32 AAuraEnemy::GetCharacterLevel()
-{
-	return Level;
-}
-
-void AAuraEnemy::Die()
-{
-	SetLifeSpan(LifeSpan);
-	Super::Die();
 }

@@ -8,6 +8,7 @@
 #include "AuraAbilitySystemLibrary.generated.h"
 
 
+struct FGameplayEffectContextHandle;
 class UAbilitySystemComponent;
 class UOverlayWidgetController;
 class UAttributeMenuWidgetController;
@@ -48,4 +49,11 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Aura Ability System Library|Gameplay Effects")
 	static void SetIsCriticalHit(UPARAM(ref) FGameplayEffectContextHandle& EffectContextHandle, bool bIsCriticalHit);
+
+	UFUNCTION(BlueprintCallable, Category = "Aura Ability System Library|Gameplay Mechanics")
+	static void GetLivePlayersWithinRadius(const UObject* WorldContextObject,
+	                                       TArray<AActor*>& OutOverlappingActors,
+	                                       const TArray<AActor*>& ActorsToIgnore,
+	                                       float Radius,
+	                                       const FVector& SphereOrigin);
 };

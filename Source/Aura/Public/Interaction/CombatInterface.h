@@ -38,11 +38,14 @@ public:
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
 	void UpdateFacingTarget(const FVector& TargetLocation);
 
-	// BlueprintNativeEvent means we don't have to mark this as virtual
-	// This will generate a native version of this event that we can override in C++
-	// GetHitReactMontage_Implementation() will be called IF we don't override it in Blueprints
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	UAnimMontage* GetHitReactMontage();
+	
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	bool IsDead() const;
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	AActor* GetAvatar();
 	
 	virtual void Die() = 0;
 };

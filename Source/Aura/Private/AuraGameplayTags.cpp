@@ -176,6 +176,7 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 		FName("Attributes.Resistance.Physical"),
 		FString("Resistance to Physical Damage")
 	);
+
 	
 	/*
 	 * Map Damage Types to Resistances

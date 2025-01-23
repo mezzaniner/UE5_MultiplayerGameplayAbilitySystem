@@ -53,6 +53,11 @@ public:
 
 	FGameplayTag Abilities_Attack;
 
+	// Can add melee, 1h, 2h, dual wield, ranged etc. as needed
+	FGameplayTag Montage_Attack_Weapon;
+	FGameplayTag Montage_Attack_RightHand;
+	FGameplayTag Montage_Attack_LeftHand;
+
 	TMap<FGameplayTag, FGameplayTag> DamageTypesToResistances;
 	
 	FGameplayTag Effects_HitReact;

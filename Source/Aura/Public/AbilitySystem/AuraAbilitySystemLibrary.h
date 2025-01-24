@@ -56,4 +56,7 @@ public:
 	                                       const TArray<AActor*>& ActorsToIgnore,
 	                                       float Radius,
 	                                       const FVector& SphereOrigin);
+
+	UFUNCTION(BlueprintPure, Category = "Aura Ability System Library|Gameplay Mechanics")
+	static bool IsNotFriend(AActor* FirstActor, AActor* SecondActor);
 };

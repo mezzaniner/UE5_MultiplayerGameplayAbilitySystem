@@ -135,17 +135,20 @@ void AAuraCharacterBase::AddCharacterAbilities()
 
 void AAuraCharacterBase::Dissolve()
 {
-	if (IsValid(MeshDissolveMI) && IsValid(WeaponDissolveMI))
+	TArray<UMaterialInstanceDynamic*> DynamicMaterialInstances;
+	
+	if (IsValid(MeshDissolveMI))
 	{
-		TArray<UMaterialInstanceDynamic*> DynamicMaterialInstances;
 		UMaterialInstanceDynamic* MeshDynamicMI = UMaterialInstanceDynamic::Create(MeshDissolveMI, this);
 		GetMesh()->SetMaterial(0, MeshDynamicMI);
 		DynamicMaterialInstances.AddUnique(MeshDynamicMI);
-
-		UMaterialInstanceDynamic* WeaponDynamicMI = UMaterialInstanceDynamic::Create(WeaponDissolveMI, this);
-		Weapon->SetMaterial(0, WeaponDynamicMI);
-		DynamicMaterialInstances.AddUnique(WeaponDynamicMI);
-
-		StartDissolveTimeline(DynamicMaterialInstances);
 	}
+
+	if (IsValid(WeaponDissolveMI))
+	{
+		UMaterialInstanceDynamic* WeaponDynamicMI = UMaterialInstanceDynamic::Create(WeaponDissolveMI, this);
+        Weapon->SetMaterial(0, WeaponDynamicMI);
+	}
+
+	if (DynamicMaterialInstances.Num() > 0) StartDissolveTimeline(DynamicMaterialInstances);
 }

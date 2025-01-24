@@ -3,6 +3,7 @@
 #include "Character/AuraCharacterBase.h"
 
 #include "AbilitySystemComponent.h"
+#include "AuraGameplayTags.h"
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
 #include "Aura/Aura.h"
 #include "Components/CapsuleComponent.h"
@@ -24,7 +25,6 @@ AAuraCharacterBase::AAuraCharacterBase()
 void AAuraCharacterBase::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
 UAbilitySystemComponent* AAuraCharacterBase::GetAbilitySystemComponent() const
@@ -55,17 +55,35 @@ void AAuraCharacterBase::MulticastHandleDeath_Implementation()
 	GetMesh()->SetEnableGravity(true);
 	GetMesh()->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
 	GetMesh()->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Block);
-	
+
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-	
+
 	Dissolve();
 	bDead = true;
 }
 
-FVector AAuraCharacterBase::GetCombatSocketLocation_Implementation()
+FVector AAuraCharacterBase::GetCombatSocketLocation_Implementation(const FGameplayTag& MontageTag)
 {
-	check(Weapon);
-	return Weapon->GetSocketLocation(WeaponTipSocketName);
+	// TODO: Return correct socket based on MontageTag
+	// TODO: Make a TMap mapping MontageTags to Sockets to make this data-driven
+
+	const FAuraGameplayTags& AuraGameplayTags = FAuraGameplayTags::Get();
+	if (MontageTag.MatchesTagExact(AuraGameplayTags.Montage_Attack_Weapon) && IsValid(Weapon))
+    {
+        return Weapon->GetSocketLocation(WeaponTipSocketName);
+    }
+	
+	if (MontageTag.MatchesTagExact(AuraGameplayTags.Montage_Attack_LeftHand))
+	{
+		return GetMesh()->GetSocketLocation(LeftHandSocketName);
+	}
+	
+	if (MontageTag.MatchesTagExact(AuraGameplayTags.Montage_Attack_RightHand))
+	{
+		return GetMesh()->GetSocketLocation(RightHandSocketName);
+	}
+
+	return FVector();
 }
 
 bool AAuraCharacterBase::IsDead_Implementation() const
@@ -91,11 +109,11 @@ void AAuraCharacterBase::ApplyEffectToSelf(const TSubclassOf<UGameplayEffect>& G
 {
 	check(IsValid(AbilitySystemComponent));
 	checkf(GameplayEffectClass, TEXT("DefaultPrimaryAttributes is not set in Blueprint"));
-	
+
 	FGameplayEffectContextHandle ContextHandle = GetAbilitySystemComponent()->MakeEffectContext();
 	ContextHandle.AddSourceObject(this); // Add this actor as the source object
-	const FGameplayEffectSpecHandle EffectSpecHandle = AbilitySystemComponent->MakeOutgoingSpec(GameplayEffectClass, 
-	Level, ContextHandle);
+	const FGameplayEffectSpecHandle EffectSpecHandle = AbilitySystemComponent->MakeOutgoingSpec(GameplayEffectClass,
+	                                                                                            Level, ContextHandle);
 	GetAbilitySystemComponent()->ApplyGameplayEffectSpecToTarget(*EffectSpecHandle.Data.Get(), GetAbilitySystemComponent());
 }
 
@@ -123,7 +141,7 @@ void AAuraCharacterBase::Dissolve()
 		UMaterialInstanceDynamic* MeshDynamicMI = UMaterialInstanceDynamic::Create(MeshDissolveMI, this);
 		GetMesh()->SetMaterial(0, MeshDynamicMI);
 		DynamicMaterialInstances.AddUnique(MeshDynamicMI);
-		
+
 		UMaterialInstanceDynamic* WeaponDynamicMI = UMaterialInstanceDynamic::Create(WeaponDissolveMI, this);
 		Weapon->SetMaterial(0, WeaponDynamicMI);
 		DynamicMaterialInstances.AddUnique(WeaponDynamicMI);
@@ -131,4 +149,3 @@ void AAuraCharacterBase::Dissolve()
 		StartDissolveTimeline(DynamicMaterialInstances);
 	}
 }
-

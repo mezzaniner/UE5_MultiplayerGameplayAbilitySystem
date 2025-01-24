@@ -41,7 +41,7 @@ public:
 	virtual int32 GetCharacterLevel();
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	FVector GetCombatSocketLocation();
+	FVector GetCombatSocketLocation(const FGameplayTag& MontageTag);
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void SetCombatTarget(AActor* InCombatTarget);

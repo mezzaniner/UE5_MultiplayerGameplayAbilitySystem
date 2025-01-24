@@ -18,7 +18,7 @@ void UAuraProjectileSpell::ActivateAbility(const FGameplayAbilitySpecHandle Hand
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 }
 
-// Will need to be refactored for handling server-side rewind
+// TODO: Will need to be refactored for handling server-side rewind
 void UAuraProjectileSpell::SpawnProjectile(const FVector& TargetLocation)
 {
 	const bool bIsServer = GetAvatarActorFromActorInfo()->HasAuthority();
@@ -46,14 +46,15 @@ void UAuraProjectileSpell::SpawnProjectile(const FVector& TargetLocation)
 	const UAbilitySystemComponent* SourceASC = GetAbilitySystemComponentFromActorInfo();
 	FGameplayEffectContextHandle EffectContextHandle = SourceASC->MakeEffectContext();
 	EffectContextHandle.SetAbility(this);
-	EffectContextHandle.AddSourceObject(Projectile); // Set source object to anything you need - useful for projectiles, traps, etc.
+	EffectContextHandle.AddSourceObject(Projectile); // Set source object - useful for projectiles, traps, etc.
 	EffectContextHandle.AddActors({ GetAvatarActorFromActorInfo(), Projectile }); // Can add more actors if needed
 	FHitResult HitResult;
 	HitResult.Location = TargetLocation;
 	EffectContextHandle.AddHitResult(HitResult);
 		
 	const FGameplayEffectSpecHandle SpecHandle = SourceASC->MakeOutgoingSpec(DamageEffectClass, GetAbilityLevel(), EffectContextHandle);
-	const FAuraGameplayTags GameplayTags = FAuraGameplayTags::Get();
+	
+	const FAuraGameplayTags GameplayTags = FAuraGameplayTags::Get(); // Do I need this here?
 	
 	for (TTuple<FGameplayTag, FScalableFloat>& Pair : DamageTypes)
 	{

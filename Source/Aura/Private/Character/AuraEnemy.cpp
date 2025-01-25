@@ -141,12 +141,6 @@ AActor* AAuraEnemy::GetCombatTarget_Implementation() const
 	return CombatTarget;
 }
 
-void AAuraEnemy::Die()
-{
-	SetLifeSpan(LifeSpan);
-	Super::Die();
-}
-
 void AAuraEnemy::HighlightActor()
 {
 	GetMesh()->SetRenderCustomDepth(true);
@@ -159,4 +153,12 @@ void AAuraEnemy::UnHighlightActor()
 {
 	GetMesh()->SetRenderCustomDepth(false);
 	Weapon->SetRenderCustomDepth(false);
+}
+
+void AAuraEnemy::Die()
+{
+	if (AuraAIController) AuraAIController->GetBlackboardComponent()->SetValueAsBool(FName("Dead"), true);
+	SetLifeSpan(LifeSpan);
+	
+	Super::Die();
 }

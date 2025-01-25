@@ -148,6 +148,7 @@ void AAuraCharacterBase::Dissolve()
 	{
 		UMaterialInstanceDynamic* WeaponDynamicMI = UMaterialInstanceDynamic::Create(WeaponDissolveMI, this);
         Weapon->SetMaterial(0, WeaponDynamicMI);
+		DynamicMaterialInstances.AddUnique(WeaponDynamicMI);
 	}
 
 	if (DynamicMaterialInstances.Num() > 0) StartDissolveTimeline(DynamicMaterialInstances);

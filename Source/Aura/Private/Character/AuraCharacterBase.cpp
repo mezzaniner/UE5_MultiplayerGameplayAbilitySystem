@@ -8,6 +8,7 @@
 #include "Aura/Aura.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/SkeletalMeshComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 
 AAuraCharacterBase::AAuraCharacterBase()
@@ -47,6 +48,8 @@ void AAuraCharacterBase::Die()
 // Called on server and all clients
 void AAuraCharacterBase::MulticastHandleDeath_Implementation()
 {
+	UGameplayStatics::PlaySoundAtLocation(this, DeathSound, GetActorLocation(), GetActorRotation());
+	
 	Weapon->SetSimulatePhysics(true);
 	Weapon->SetEnableGravity(true);
 	Weapon->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
@@ -62,23 +65,23 @@ void AAuraCharacterBase::MulticastHandleDeath_Implementation()
 	bDead = true;
 }
 
-FVector AAuraCharacterBase::GetCombatSocketLocation_Implementation(const FGameplayTag& MontageTag)
+FVector AAuraCharacterBase::GetCombatSocketLocation_Implementation(const FGameplayTag& SocketTag)
 {
 	// TODO: Return correct socket based on MontageTag
 	// TODO: Make a TMap mapping MontageTags to Sockets to make this data-driven
 
 	const FAuraGameplayTags& AuraGameplayTags = FAuraGameplayTags::Get();
-	if (MontageTag.MatchesTagExact(AuraGameplayTags.CombatSocket_Weapon) && IsValid(Weapon))
+	if (SocketTag.MatchesTagExact(AuraGameplayTags.CombatSocket_Weapon) && IsValid(Weapon))
     {
         return Weapon->GetSocketLocation(WeaponTipSocketName);
     }
 	
-	if (MontageTag.MatchesTagExact(AuraGameplayTags.CombatSocket_LeftHand))
+	if (SocketTag.MatchesTagExact(AuraGameplayTags.CombatSocket_LeftHand))
 	{
 		return GetMesh()->GetSocketLocation(LeftHandSocketName);
 	}
 	
-	if (MontageTag.MatchesTagExact(AuraGameplayTags.CombatSocket_RightHand))
+	if (SocketTag.MatchesTagExact(AuraGameplayTags.CombatSocket_RightHand))
 	{
 		return GetMesh()->GetSocketLocation(RightHandSocketName);
 	}
@@ -104,6 +107,19 @@ TArray<FTaggedMontage> AAuraCharacterBase::GetAttackMontages_Implementation()
 UNiagaraSystem* AAuraCharacterBase::GetBloodEffect_Implementation()
 {
 	return BloodEffect;
+}
+
+FTaggedMontage AAuraCharacterBase::GetTaggedMontageByTag_Implementation(const FGameplayTag& MontageTag)
+{
+	for (FTaggedMontage TaggedMontage : AttackMontages)
+	{
+		if (TaggedMontage.MontageTag == MontageTag)
+		{
+			return TaggedMontage;
+		}
+	}
+
+	return FTaggedMontage();
 }
 
 void AAuraCharacterBase::InitAbilityActorInfo()

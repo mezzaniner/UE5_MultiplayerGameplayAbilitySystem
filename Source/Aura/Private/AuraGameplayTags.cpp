@@ -120,7 +120,7 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 		FString("InputTag for 4 key")
 	);
 
-	
+
 	/**
 	 * Damage Tags
 	 */
@@ -129,7 +129,7 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 		FString("Damage")
 	);
 
-	
+
 	/*
 	 * Damage Types
 	 */
@@ -137,23 +137,23 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 		FName("Damage.Fire"),
 		FString("Fire Damage Type")
 	);
-	
+
 	GameplayTags.Damage_Lightning = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Damage.Lightning"),
 		FString("Lightning Damage Type")
 	);
-	
+
 	GameplayTags.Damage_Arcane = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Damage.Arcane"),
 		FString("Arcane Damage Type")
 	);
-	
+
 	GameplayTags.Damage_Physical = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Damage.Physical"),
 		FString("Physical Damage Type")
 	);
 
-	
+
 	/*
 	 * Resistances
 	 */
@@ -161,7 +161,7 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 		FName("Attributes.Resistance.Fire"),
 		FString("Resistance to Fire Damage")
 	);
-	
+
 	GameplayTags.Attributes_Resistance_Arcane = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Attributes.Resistance.Arcane"),
 		FString("Resistance to Arcane Damage")
@@ -177,7 +177,7 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 		FString("Resistance to Physical Damage")
 	);
 
-	
+
 	/*
 	 * Map Damage Types to Resistances
 	 */
@@ -186,7 +186,7 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 	GameplayTags.DamageTypesToResistances.Add(GameplayTags.Damage_Arcane, GameplayTags.Attributes_Resistance_Arcane);
 	GameplayTags.DamageTypesToResistances.Add(GameplayTags.Damage_Physical, GameplayTags.Attributes_Resistance_Physical);
 
-	
+
 	/*
 	 * Effects
 	 */
@@ -195,7 +195,7 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 		FString("Tag granted when reacting to a Hit")
 	);
 
-	
+
 	/*
 	 * Abilities
 	 */
@@ -204,23 +204,49 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 		FString("Attack Ability Tag")
 	);
 
-	
+
 	/*
-	 * Montage
+	 * Combat Sockets
 	 */
-	GameplayTags.Montage_Attack_Weapon = UGameplayTagsManager::Get().AddNativeGameplayTag(
-		FName("Montage.Attack.Weapon"),
+
+	// TODO: Add additional tags/sockets for dual wielding, 2h, ranged etc.
+
+	GameplayTags.CombatSocket_Weapon = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("CombatSocket.Weapon"),
 		FString("Weapon")
 	);
 
-	GameplayTags.Montage_Attack_RightHand = UGameplayTagsManager::Get().AddNativeGameplayTag(
-		FName("Montage.Attack.RightHand"),
-		FString("Right Hand")
+	GameplayTags.CombatSocket_RightHand = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("CombatSocket.RightHand"),
+		FString("Right Hand Socket")
 	);
-	
-	GameplayTags.Montage_Attack_LeftHand = UGameplayTagsManager::Get().AddNativeGameplayTag(
-		FName("Montage.Attack.LeftHand"),
-		FString("Left Hand")
+
+	GameplayTags.CombatSocket_LeftHand = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("CombatSocket.LeftHand"),
+		FString("Left Hand Socket")
 	);
-	
+
+
+	/*
+	 * Combat Tags
+	 */
+	GameplayTags.Montage_Attack_1 = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Montage.Attack.1"),
+		FString("Attack Montage 1")
+	);
+
+	GameplayTags.Montage_Attack_2 = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Montage.Attack.2"),
+		FString("Attack Montage 2")
+	);
+
+	GameplayTags.Montage_Attack_3 = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Montage.Attack.3"),
+		FString("Attack Montage 3")
+	);
+
+	GameplayTags.Montage_Attack_4 = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Montage.Attack.4"),
+		FString("Attack Montage 4")
+	);
 }

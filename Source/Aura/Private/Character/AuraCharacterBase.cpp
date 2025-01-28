@@ -41,7 +41,14 @@ UAnimMontage* AAuraCharacterBase::GetHitReactMontage_Implementation()
 // Called only on the server
 void AAuraCharacterBase::Die()
 {
-	Weapon->DetachFromComponent(FDetachmentTransformRules(EDetachmentRule::KeepWorld, true));
+	// Weapon->DetachFromComponent(FDetachmentTransformRules(EDetachmentRule::KeepWorld, true));
+	// Weapon->SetSimulatePhysics(true);
+	// Weapon->SetEnableGravity(true);
+	// Weapon->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
+	// GetMesh()->SetSimulatePhysics(true);
+	// GetMesh()->SetEnableGravity(true);
+	// GetMesh()->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
+	// GetMesh()->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Block);
 	MulticastHandleDeath();
 }
 
@@ -49,11 +56,12 @@ void AAuraCharacterBase::Die()
 void AAuraCharacterBase::MulticastHandleDeath_Implementation()
 {
 	UGameplayStatics::PlaySoundAtLocation(this, DeathSound, GetActorLocation(), GetActorRotation());
-	
+
+	Weapon->DetachFromComponent(FDetachmentTransformRules(EDetachmentRule::KeepWorld, true));
 	Weapon->SetSimulatePhysics(true);
 	Weapon->SetEnableGravity(true);
 	Weapon->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
-
+	
 	GetMesh()->SetSimulatePhysics(true);
 	GetMesh()->SetEnableGravity(true);
 	GetMesh()->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);

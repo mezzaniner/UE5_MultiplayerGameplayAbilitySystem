@@ -79,6 +79,7 @@ FVector AAuraCharacterBase::GetCombatSocketLocation_Implementation(const FGamepl
 	// TODO: Make a TMap mapping MontageTags to Sockets to make this data-driven
 
 	const FAuraGameplayTags& AuraGameplayTags = FAuraGameplayTags::Get();
+	
 	if (SocketTag.MatchesTagExact(AuraGameplayTags.CombatSocket_Weapon) && IsValid(Weapon))
     {
         return Weapon->GetSocketLocation(WeaponTipSocketName);
@@ -92,6 +93,11 @@ FVector AAuraCharacterBase::GetCombatSocketLocation_Implementation(const FGamepl
 	if (SocketTag.MatchesTagExact(AuraGameplayTags.CombatSocket_RightHand))
 	{
 		return GetMesh()->GetSocketLocation(RightHandSocketName);
+	}
+	
+	if (SocketTag.MatchesTagExact(AuraGameplayTags.CombatSocket_Tail))
+	{
+		return GetMesh()->GetSocketLocation(TailSocketName);
 	}
 
 	return FVector();

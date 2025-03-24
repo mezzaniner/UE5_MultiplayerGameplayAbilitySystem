@@ -54,6 +54,7 @@ public:
 	FGameplayTag Damage_Physical;
 
 	FGameplayTag Abilities_Attack;
+	FGameplayTag Abilities_Summon;
 
 	// Can add melee, 1h, 2h, dual wield, ranged etc. as needed
 	FGameplayTag CombatSocket_Weapon;

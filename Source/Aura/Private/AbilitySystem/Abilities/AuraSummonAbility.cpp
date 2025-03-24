@@ -2,7 +2,6 @@
 
 
 #include "AbilitySystem/Abilities/AuraSummonAbility.h"
-#include "Kismet/KismetSystemLibrary.h"
 
 TArray<FVector> UAuraSummonAbility::GetSpawnLocations()
 {
@@ -11,7 +10,6 @@ TArray<FVector> UAuraSummonAbility::GetSpawnLocations()
 	const float DeltaSpread = SpawnSpread / NumMinionsToSpawn;
 
 	const FVector LeftOfSpread = Forward.RotateAngleAxis(-SpawnSpread / 2, FVector::UpVector);
-	// UKismetSystemLibrary::DrawDebugArrow(GetAvatarActorFromActorInfo(), Location, Location + RightOfSpread * MaxSpawnDistance, 4.f, FLinearColor::Green, 3.f);
 
 	TArray<FVector> SpawnLocations;
 	
@@ -32,4 +30,10 @@ TArray<FVector> UAuraSummonAbility::GetSpawnLocations()
 	}
 	
 	return SpawnLocations;
+}
+
+TSubclassOf<APawn> UAuraSummonAbility::GetRandomMinionClass()
+{
+	const int32 Selection = FMath::RandRange(0, MinionClasses.Num() - 1);
+	return MinionClasses[Selection];
 }

@@ -19,7 +19,8 @@ void UAuraProjectileSpell::ActivateAbility(const FGameplayAbilitySpecHandle Hand
 }
 
 // TODO: Will need to be refactored for handling server-side rewind
-void UAuraProjectileSpell::SpawnProjectile(const FVector& TargetLocation, const FGameplayTag& SocketTag)
+void UAuraProjectileSpell::SpawnProjectile(const FVector& TargetLocation, const FGameplayTag& SocketTag, bool bOverridePitch, 
+	float PitchOverride)
 {
 	const bool bIsServer = GetAvatarActorFromActorInfo()->HasAuthority();
 	if (!bIsServer) return;
@@ -30,6 +31,10 @@ void UAuraProjectileSpell::SpawnProjectile(const FVector& TargetLocation, const 
 	);
 	
 	FRotator Rotation = (TargetLocation - SocketLocation).Rotation();
+	if (bOverridePitch)
+	{
+		Rotation.Pitch = PitchOverride;
+	}
 		
 	FTransform SpawnTransform;
 	SpawnTransform.SetLocation(SocketLocation);

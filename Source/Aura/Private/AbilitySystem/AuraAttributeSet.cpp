@@ -147,23 +147,6 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 	}
 }
 
-void UAuraAttributeSet::ShowFloatingText(const FEffectProperties& Props, const float LocalIncomingDamage, bool bBlockedHit, bool bCriticalHit) const
-{
-	if (Props.SourceCharacter != Props.TargetCharacter)
-	{
-		if (AAuraPlayerController* PC = Cast<AAuraPlayerController>(Props.SourceCharacter->Controller))
-		{
-			PC->ShowDamageNumber(LocalIncomingDamage, Props.TargetCharacter, bBlockedHit, bCriticalHit);
-			return;
-		}
-		
-		if (AAuraPlayerController* PC = Cast<AAuraPlayerController>(Props.TargetCharacter->Controller))
-		{
-			PC->ShowDamageNumber(LocalIncomingDamage, Props.TargetCharacter, bBlockedHit, bCriticalHit);
-		}
-	}
-}
-
 void UAuraAttributeSet::SetEffectProperties(const FGameplayEffectModCallbackData& Data, FEffectProperties& Props)
 {
 	// Source = causer of the effect, Target = target of the effect (owner of this AttributeSet)
@@ -197,6 +180,24 @@ void UAuraAttributeSet::SetEffectProperties(const FGameplayEffectModCallbackData
 		Props.TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(Props.TargetAvatarActor);
 	}
 }
+
+void UAuraAttributeSet::ShowFloatingText(const FEffectProperties& Props, const float LocalIncomingDamage, bool bBlockedHit, bool bCriticalHit) const
+{
+	if (Props.SourceCharacter != Props.TargetCharacter)
+	{
+		if (AAuraPlayerController* PC = Cast<AAuraPlayerController>(Props.SourceCharacter->Controller))
+		{
+			PC->ShowDamageNumber(LocalIncomingDamage, Props.TargetCharacter, bBlockedHit, bCriticalHit);
+			return;
+		}
+		
+		if (AAuraPlayerController* PC = Cast<AAuraPlayerController>(Props.TargetCharacter->Controller))
+		{
+			PC->ShowDamageNumber(LocalIncomingDamage, Props.TargetCharacter, bBlockedHit, bCriticalHit);
+		}
+	}
+}
+
 
 /*
  * Primary Attributes

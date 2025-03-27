@@ -51,21 +51,44 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 				OnMaxManaChanged.Broadcast(Data.NewValue);
 			}
 		);
-	
-	// Bind to EffectAssetTags
-	Cast<UAuraAbilitySystemComponent>(AbilitySystemComponent)->EffectAssetTags
-		.AddLambda([this](const FGameplayTagContainer& AssetTags)
-			{
-				for (const FGameplayTag& Tag : AssetTags)
-				{
-					// "Message.HealthPotion".MatchesTag("Message") will return True
-					// "Message".MatchesTag("Message.HealthPotion") will return False
-					FGameplayTag MessageTag = FGameplayTag::RequestGameplayTag(FName("Message"));
-					if (!Tag.MatchesTag(MessageTag)) return;
 
-					const FUIWidgetRow* Row = GetDataTableRowByTag<FUIWidgetRow>(MessageWidgetDataTable, Tag);
-					MessageWidgetRowDelegate.Broadcast(*Row);
-				}
-			}	
-		);
+	if (UAuraAbilitySystemComponent* AuraASC = Cast<UAuraAbilitySystemComponent>(AbilitySystemComponent))
+	{
+		// Handles cases where either the AbilitySystemComponent has Given the abilities yet or it hasn't
+		if (AuraASC->bStartupAbilitiesGiven)
+		{
+			OnInitializeStartupAbilities(AuraASC);
+		}
+		else
+		{
+			AuraASC->AbilitiesGivenDelegate.AddUObject(this, &UOverlayWidgetController::OnInitializeStartupAbilities);
+		}
+	
+		// Bind to EffectAssetTagsDelegate
+		AuraASC->EffectAssetTagsDelegate
+			.AddLambda([this](const FGameplayTagContainer& AssetTags)
+				{
+					for (const FGameplayTag& Tag : AssetTags)
+					{
+						// "Message.HealthPotion".MatchesTag("Message") will return True
+						// "Message".MatchesTag("Message.HealthPotion") will return False
+						FGameplayTag MessageTag = FGameplayTag::RequestGameplayTag(FName("Message"));
+						if (!Tag.MatchesTag(MessageTag)) return;
+
+						const FUIWidgetRow* Row = GetDataTableRowByTag<FUIWidgetRow>(MessageWidgetDataTable, Tag);
+						MessageWidgetRowDelegate.Broadcast(*Row);
+					}
+				}	
+			);
+	}
+	
+
+}
+
+void UOverlayWidgetController::OnInitializeStartupAbilities(UAuraAbilitySystemComponent* AuraAbilitySystemComponent)
+{
+	//TODO: Get information about all given abilities, look up their Ability Info, and broadcast it to widgets
+	if (!AuraAbilitySystemComponent->bStartupAbilitiesGiven) return;
+
+	
 }

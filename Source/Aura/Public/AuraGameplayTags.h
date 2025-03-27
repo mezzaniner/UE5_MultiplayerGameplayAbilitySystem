@@ -55,6 +55,7 @@ public:
 
 	FGameplayTag Abilities_Attack;
 	FGameplayTag Abilities_Summon;
+	FGameplayTag Abilities_Fire_FireBolt;
 
 	// Can add melee, 1h, 2h, dual wield, ranged etc. as needed
 	FGameplayTag CombatSocket_Weapon;

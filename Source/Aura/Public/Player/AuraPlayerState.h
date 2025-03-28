@@ -10,6 +10,10 @@
 class UAttributeSet;
 class UAbilitySystemComponent;
 
+
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnPlayerStatChanged, int32 /* StatValue */);
+
+
 /**
  * 
  */
@@ -24,6 +28,18 @@ public:
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	UAttributeSet* GetAttributeSet() const { return AttributeSet; }
+
+	FOnPlayerStatChanged OnXPChangedDelegate;
+	FOnPlayerStatChanged OnLevelChangedDelegate;
+	
+	FORCEINLINE int32 GetCharacterLevel() const { return Level; }
+	FORCEINLINE int32 GetCharacterXP() const { return XP; }
+	
+	void AddToXP(int32 InXP);
+	void AddToLevel(int32 InLevel);
+	
+	void SetXP(int32 InXP);
+	void SetLevel(int32 InLevel);
 	
 protected:
 	UPROPERTY(VisibleAnywhere)
@@ -36,9 +52,13 @@ private:
 	UPROPERTY(ReplicatedUsing = OnRep_Level, VisibleAnywhere)
 	int32 Level = 1;
 
+	UPROPERTY(ReplicatedUsing = OnRep_XP, VisibleAnywhere)
+	int32 XP = 1;
+	
+	UFUNCTION()
+	void OnRep_XP(int32 OldXP);
+
 	UFUNCTION()
 	void OnRep_Level(int32 OldLevel);
 
-public:
-	FORCEINLINE int32 GetCharacterLevel() const { return Level; }
 };

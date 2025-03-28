@@ -91,13 +91,13 @@ void UOverlayWidgetController::OnInitializeStartupAbilities(UAuraAbilitySystemCo
 	// Get information about all given abilities, look up their Ability Info, and broadcast it to widgets
 	if (!AuraAbilitySystemComponent->bStartupAbilitiesGiven) return;
 
-	FForEachAbility BroadcastDelegate;
-	BroadcastDelegate.BindLambda([this, AuraAbilitySystemComponent](const FGameplayAbilitySpec& AbilitySpec)
+	FForEachAbility BroadcastSpecsDelegate;
+	BroadcastSpecsDelegate.BindLambda([this, AuraAbilitySystemComponent](const FGameplayAbilitySpec& AbilitySpec)
 	{
 		FAuraAbilityInfo Info = AbilityInfo->FindAbilityInfoForTag(AuraAbilitySystemComponent->GetAbilityTagFromSpec(AbilitySpec));
 		Info.InputTag = AuraAbilitySystemComponent->GetInputTagFromSpec(AbilitySpec);
 		AbilityInfoDelegate.Broadcast(Info);
 	});
 
-	AuraAbilitySystemComponent->ForEachAbility(BroadcastDelegate);
+	AuraAbilitySystemComponent->ForEachAbility(BroadcastSpecsDelegate);
 }

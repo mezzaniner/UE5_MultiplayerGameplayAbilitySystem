@@ -64,8 +64,9 @@ void UAuraAbilitySystemComponent::ForEachAbility(const FForEachAbility& Delegate
 {
 	// Locks the container until the for loop is done
 	FScopedAbilityListLock ActiveScopeLock(*this);
-	
-	for (const FGameplayAbilitySpec& AbilitySpec : GetActivatableAbilities())
+
+	TArray<FGameplayAbilitySpec>& ActivatableAbilitySpecs = GetActivatableAbilities();
+	for (const FGameplayAbilitySpec& AbilitySpec : ActivatableAbilitySpecs)
 	{
 		if (!Delegate.ExecuteIfBound(AbilitySpec))
 		{

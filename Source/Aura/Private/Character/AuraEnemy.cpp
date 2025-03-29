@@ -126,7 +126,7 @@ void AAuraEnemy::InitializeDefaultAttributes()
 	UAuraAbilitySystemLibrary::InitializeDefaultAttributes(this, CharacterClass, Level, AbilitySystemComponent);
 }
 
-int32 AAuraEnemy::GetCharacterLevel()
+int32 AAuraEnemy::GetCharacterLevel_Implementation()
 {
 	return Level;
 }

@@ -33,8 +33,11 @@ float UMMC_MaxMana::CalculateBaseMagnitude_Implementation(const FGameplayEffectS
 	Intelligence = FMath::Max<float>(Intelligence, 0.f);
 
 	// Get the character level
-	ICombatInterface* CombatInterface = Cast<ICombatInterface>(Spec.GetContext().GetSourceObject());
-	const int32 CharacterLevel = CombatInterface->GetCharacterLevel();
+	int32 CharacterLevel = 1;
+	if (Spec.GetContext().GetSourceObject()->Implements<UCombatInterface>())
+	{
+		CharacterLevel = ICombatInterface::Execute_GetCharacterLevel(Spec.GetContext().GetSourceObject());
+	}
 
 	// Scale magnitude based on the attribute value and character level - you can do any custom calculation here
 	return 50.f + (Intelligence * 2.5f) + (CharacterLevel * 15.f);

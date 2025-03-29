@@ -218,10 +218,10 @@ void UAuraAttributeSet::ShowFloatingText(const FEffectProperties& Props, const f
 
 void UAuraAttributeSet::SendXPEvent(const FEffectProperties& Props)
 {
-	if (ICombatInterface* CombatInterface = Cast<ICombatInterface>(Props.TargetCharacter))
+	if (Props.TargetCharacter->Implements<UCombatInterface>())
 	{
 		const ECharacterClass TargetCharacterClass = ICombatInterface::Execute_GetCharacterClass(Props.TargetCharacter);
-		const int32 TargetCharacterLevel = CombatInterface->GetCharacterLevel();
+		const int32 TargetCharacterLevel = ICombatInterface::Execute_GetCharacterLevel(Props.TargetCharacter);
 		const int32 XPReward = UAuraAbilitySystemLibrary::GetXPRewardForClassAndLevel(Props.TargetCharacter, TargetCharacterClass, TargetCharacterLevel);
 
 		const FAuraGameplayTags& GameplayTags = FAuraGameplayTags::Get();
@@ -231,7 +231,6 @@ void UAuraAttributeSet::SendXPEvent(const FEffectProperties& Props)
 		UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(Props.SourceCharacter, GameplayTags.Attributes_Meta_IncomingXP, Payload);
 	}
 }
-
 
 /*
  * Primary Attributes

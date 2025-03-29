@@ -27,6 +27,7 @@ public:
 	
 	void AbilityActorInfoSet();
 	void AddCharacterAbilities(const TArray<TSubclassOf<UGameplayAbility>>& StartupAbilityClasses);
+	void AddCharacterPassiveAbilities(const TArray<TSubclassOf<UGameplayAbility>>& StartupPassiveAbilityClasses);
 	bool bStartupAbilitiesGiven = false;
 	
 	void AbilityInputTagHeld(const FGameplayTag& InputTag);

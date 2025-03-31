@@ -93,8 +93,6 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 				}	
 			);
 	}
-	
-
 }
 
 void UOverlayWidgetController::OnInitializeStartupAbilities(UAuraAbilitySystemComponent* AuraAbilitySystemComponent)
